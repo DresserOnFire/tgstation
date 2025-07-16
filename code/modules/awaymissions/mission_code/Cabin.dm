@@ -128,35 +128,3 @@
 /obj/structure/ladder/unbreakable/rune/use(mob/user, going_up = TRUE)
 	if(!IS_WIZARD(user))
 		..()
-
-/*Cabin's forest. Removed in the new cabin map since it was buggy and I prefer manual placement.*/
-/datum/map_generator/snowy
-	modules = list(/datum/map_generator_module/bottomlayer/snow, \
-	/datum/map_generator_module/snow/pine_trees, \
-	/datum/map_generator_module/snow/dead_trees, \
-	/datum/map_generator_module/snow/rand_bushes, \
-	/datum/map_generator_module/snow/rand_ice_rocks, \
-	/datum/map_generator_module/snow/bunnies)
-
-/datum/map_generator_module/snow/checkPlaceAtom(turf/T)
-	if(istype(T, /turf/open/misc/asteroid/snow))
-		return ..()
-	return FALSE
-
-/datum/map_generator_module/bottomlayer/snow
-	spawnableTurfs = list(/turf/open/misc/asteroid/snow/atmosphere = 100)
-
-/datum/map_generator_module/snow/pine_trees
-	spawnableAtoms = list(/obj/structure/flora/tree/pine/style_random = 30)
-
-/datum/map_generator_module/snow/dead_trees
-	spawnableAtoms = list(/obj/structure/flora/tree/dead/style_random = 10)
-
-/datum/map_generator_module/snow/rand_bushes
-	spawnableAtoms = list(/obj/structure/flora/bush/snow/style_random = 1)
-
-/datum/map_generator_module/snow/bunnies
-	spawnableAtoms = list(/mob/living/basic/rabbit = 0.5)
-
-/datum/map_generator_module/snow/rand_ice_rocks
-	spawnableAtoms = list(/obj/structure/flora/rock/icy/style_random = 5, /obj/structure/flora/rock/pile/icy/style_random = 5)

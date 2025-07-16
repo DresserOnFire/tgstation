@@ -11,11 +11,11 @@
 	)
 
 /datum/buildmode_mode/mapgen/change_settings(client/c)
-	var/list/gen_paths = subtypesof(/datum/map_generator)
+	var/list/gen_paths = subtypesof(/datum/terrain_generator)
 	var/list/options = list()
 	for(var/path in gen_paths)
-		var/datum/map_generator/MP = path
-		options[initial(MP.buildmode_name)] = path
+		var/datum/terrain_generator/terrain_gen = path
+		options[initial(terrain_gen.name)] = path
 	var/type = input(c,"Select Generator Type","Type") as null|anything in options
 	if(!type)
 		return
@@ -34,15 +34,15 @@
 	var/list/modifiers = params2list(params)
 
 	if(LAZYACCESS(modifiers, LEFT_CLICK))
-		var/datum/map_generator/G = new generator_path
-		if(istype(G, /datum/map_generator/repair/reload_station_map))
+		var/datum/terrain_generator/terrain_generator = new generator_path
+		if(istype(terrain_generator, /datum/terrain_generator/repair/reload_station_map))
 			if(GLOB.reloading_map)
 				to_chat(c, span_boldwarning("You are already reloading an area! Please wait for it to fully finish loading before trying to load another!"))
 				deselect_region()
 				return
 		G.defineRegion(cornerA, cornerB, 1)
-		highlight_region(G.map)
-		var/confirm = tgui_alert(usr,"Are you sure you want to run the map generator?", "Run generator", list("Yes", "No"))
+		highlight_region(terrain_generator.turfs_to_generate_on)
+		var/confirm = tgui_alert(usr,"Are you sure you want to run the terrain generator?", "Run generator", list("Yes", "No"))
 		if(confirm == "Yes")
 			G.generate()
-		log_admin("Build Mode: [key_name(c)] ran the map generator '[G.buildmode_name]' in the region from [AREACOORD(cornerA)] to [AREACOORD(cornerB)]")
+		log_admin("Build Mode: [key_name(c)] ran the terrain generator '[terrain_generator.name]' in the region from [AREACOORD(cornerA)] to [AREACOORD(cornerB)]")
